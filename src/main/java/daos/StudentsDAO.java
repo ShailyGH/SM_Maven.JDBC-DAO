@@ -9,7 +9,7 @@ import java.util.List;
 
 public class StudentsDAO implements DAO<Student>{
 
-    private Connection myConnection = DBConnection.getConnection();
+    private final Connection myConnection = DBConnection.getConnection();
 
     @Override
     public Student findById(int id) {
