@@ -78,6 +78,8 @@ public class StudentsDAO implements DAO<Student>{
 
     @Override
     public Student update(Student object) {
+
+
         return null;
     }
 
@@ -89,5 +91,13 @@ public class StudentsDAO implements DAO<Student>{
     @Override
     public void delete(int id) {
 
+        try {
+            Statement stmt = myConnection.createStatement();
+            stmt.executeQuery("DELETE FROM students WHERE id = " + id + ";");
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
