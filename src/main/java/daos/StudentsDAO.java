@@ -1,11 +1,9 @@
 package daos;
 
+import com.mysql.cj.xdevapi.PreparableStatement;
 import models.Student;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +96,25 @@ public class StudentsDAO implements DAO<Student>{
 
     @Override
     public Student create(Student object) {
+        try {
+            PreparedStatement ps = myConnection.prepareStatement("INSERT INTO students VALUES (NULL, ?, ?, ?, ?, ?)");
+            ps.setString(1, object.getFirst_name());
+            ps.setString(2, object.getLast_name());
+            ps.setInt(3, object.getAge());
+            ps.setInt(4, object.getHeight());
+            ps.setInt(5, object.getWeight());
+
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next())
+            {
+                return findById(rs.getInt(1));
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
         return null;
     }
 
