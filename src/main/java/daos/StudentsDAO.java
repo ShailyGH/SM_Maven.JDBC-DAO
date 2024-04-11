@@ -77,9 +77,22 @@ public class StudentsDAO implements DAO<Student>{
     }
 
     @Override
-    public Student update(Student object) {
+    public Student update(Student object)
+    {
+        try {
+            int id = object.getId();
+            Statement stmt = myConnection.createStatement();
+            int i = stmt.executeUpdate("UPDATE students SET first_name=" + object.getFirst_name() + ", last_name=" + object.getLast_name() + ", age=" + object.getAge() + ", height=" + object.getHeight() + ", weight=" + object.getWeight() + ";");
 
-
+            if (i == 1)
+            {
+                return findById(id);
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
         return null;
     }
 
