@@ -1,6 +1,6 @@
 package models;
 
-public class Students {
+public class Student {
     private Integer id;
     private String first_name;
     private String last_name;
@@ -8,10 +8,10 @@ public class Students {
     private Integer height;
     private Integer weight;
 
-    public Students() {
+    public Student() {
     }
 
-    public Students(Integer id, String first_name, String last_name, Integer age, Integer height, Integer weight) {
+    public Student(Integer id, String first_name, String last_name, Integer age, Integer height, Integer weight) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
