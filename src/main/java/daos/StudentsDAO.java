@@ -1,6 +1,5 @@
 package daos;
 
-import com.mysql.cj.xdevapi.PreparableStatement;
 import models.Student;
 
 import java.sql.*;
