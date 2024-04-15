@@ -16,7 +16,7 @@ public class StudentsDAO implements DAO<Student>{
         try
         {
             Statement stmt = myConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM students WHERE id = " + id + ";");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM STUDENTS_DB.students WHERE id = " + id + ";");
 
             if(rs.next())
             {
@@ -38,7 +38,7 @@ public class StudentsDAO implements DAO<Student>{
 
             myStudent.setId(rs.getInt("id"));
             myStudent.setFirst_name(rs.getNString("first_name"));
-            myStudent.setLast_name(rs.getNString("first_name"));
+            myStudent.setLast_name(rs.getNString("last_name"));
             myStudent.setAge(rs.getInt("age"));
             myStudent.setHeight(rs.getInt("height"));
             myStudent.setWeight(rs.getInt("weight"));
@@ -57,7 +57,7 @@ public class StudentsDAO implements DAO<Student>{
         try
         {
             Statement stmt = myConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM students;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM STUDENTS_DB.students;");
             ArrayList<Student> studentsList = new ArrayList<Student>();
 
             while(rs.next())
@@ -78,13 +78,12 @@ public class StudentsDAO implements DAO<Student>{
     public Student update(Student object)
     {
         try {
-            int id = object.getId();
             Statement stmt = myConnection.createStatement();
-            int i = stmt.executeUpdate("UPDATE students SET first_name=" + object.getFirst_name() + ", last_name=" + object.getLast_name() + ", age=" + object.getAge() + ", height=" + object.getHeight() + ", weight=" + object.getWeight() + ";");
+            int i = stmt.executeUpdate("UPDATE STUDENTS_DB.students SET first_name='" + object.getFirst_name() + "', last_name='" + object.getLast_name() + "', age='" + object.getAge() + "', height='" + object.getHeight() + "', weight='" + object.getWeight() + "' where id='" + object.getId() + "';");
 
             if (i == 1)
             {
-                return findById(id);
+                return findById(object.getId());
             }
         }
         catch(SQLException e)
@@ -97,14 +96,12 @@ public class StudentsDAO implements DAO<Student>{
     @Override
     public Student create(Student object) {
         try {
-            PreparedStatement ps = myConnection.prepareStatement("INSERT INTO students VALUES (NULL, ?, ?, ?, ?, ?)");
-            ps.setString(1, object.getFirst_name());
-            ps.setString(2, object.getLast_name());
-            ps.setInt(3, object.getAge());
-            ps.setInt(4, object.getHeight());
-            ps.setInt(5, object.getWeight());
+            Statement stmt = myConnection.createStatement();
+            String sql = String.format("INSERT INTO STUDENTS_DB.students (id, first_name, last_name, age, height, weight) VALUES (%d, '%s','%s',%d, %d, %d);",object.getId(), object.getFirst_name(),object.getLast_name(),object.getAge(),object.getHeight(), object.getWeight());
 
-            ResultSet rs = ps.getGeneratedKeys();
+            stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = stmt.getGeneratedKeys();
 
             if (rs.next())
             {
@@ -123,7 +120,7 @@ public class StudentsDAO implements DAO<Student>{
 
         try {
             Statement stmt = myConnection.createStatement();
-            stmt.executeQuery("DELETE FROM students WHERE id = " + id + ";");
+            stmt.executeUpdate("DELETE FROM STUDENTS_DB.students WHERE id = '" + id + "';");
         }
         catch(SQLException e)
         {
